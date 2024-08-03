@@ -16,7 +16,7 @@ module.exports.handleEvent = async function({ api, event, Users, Threads }) {
  const type = (event.author == event.logMessageData.leftParticipantFbId) ? "Left the Group... " : "\nKicked by Administrator.";
  const membersCount = await api.getThreadInfo(threadID).then(info => info.participantIDs.length);
 
- let msg = `administrator removed ${name} from the group. There are now ${membersCount} members in the group.`;
+ let msg = `administrator removed ${name} ang putangina na to sa grupo ngayon ay ${membersCount} gagong members in the group.`;
 
  var link = ["https://i.imgur.com/dVw3IRx.gif"];
  var callback = () => api.sendMessage({ body: msg, attachment: fs.createReadStream(__dirname + "/cache/randomly.gif")}, event.threadID, () => fs.unlinkSync(__dirname + "/cache/randomly.gif"));
