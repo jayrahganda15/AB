@@ -1,72 +1,55 @@
+async function getUserName(api, senderID) {
+  try {
+    const userInfo = await api.getUserInfo(senderID);
+    return userInfo[senderID]?.name || "User";
+  } catch (error) {
+    console.log(error);
+    return "User";
+  }
+}
+
 module.exports.config = {
-	name: "callad",
-	version: "1.0.1",
-	hasPermssion: 0,
-	credits: "NTKhang, ManhG Fix Get",
-	description: "Report bot's error to admin or comment",
-	usages: "[Error encountered or comments]",
-	cooldown: 5,
-	hasPrefix: false,
+  name: "callad",
+  version: "1.0.1",
+  role: 0,
+  credits: "Cliff",
+  description: "Report bot's error to admin or comment",
+  hasPrefix: false,
+  commandCategory: "report",
+  usages: "[Error encountered or comments]",
+  cooldowns: 10
 };
 
-module.exports.handleReply = async function({ api: e, args: n, event: a, Users: s, handleReply: o, prefix: t }) {
-	var i = await s.getNameUser(a.senderID);
-	switch (o.type) {
-		case "reply":
-			var admins = this.config.ADMINBOT; // Assuming ADMINBOT is defined elsewhere
-			for (let admin of admins) {
-				e.sendMessage({
-					body: "📄Feedback from " + i + ":\n" + a.body,
-					mentions: [{
-						id: a.senderID,
-						tag: i
-					}]
-				}, admin, ((e, n) => global.client.handleReply.push({
-					name: this.config.name,
-					messageID: n.messageID,
-					messID: a.messageID,
-					credits: a.senderID,
-					id: a.threadID,
-					type: "calladmin"
-				})));
-			}
-			break;
-		case "calladmin":
-			e.sendMessage({
-				body: `📌Feedback from admin ${i} to you:\n--------\n${a.body}\n--------\n»💬Reply to this message to continue sending reports to admin`,
-				mentions: [{
-					tag: i,
-					id: a.senderID
-				}]
-			}, o.id, ((e, n) => global.client.handleReply.push({
-				name: this.config.name,
-				credits: a.senderID,
-				messageID: n.messageID,
-				type: "reply"
-			})), o.messID);
-			break;
-	}
-};
+module.exports["run"] = async function({ api, event, args, admin }) {
+  if (!args[0]) return api.sendMessage("You have not entered the content to report", event.threadID, event.messageID);
 
-module.exports.run = async function({ api: e, event: n, args: a, Users: s, Threads: o }) {
-	if (!a[0]) return e.sendMessage("You have not entered the content to report", n.threadID, n.messageID);
-	let i = await s.getNameUser(n.senderID);
-	var t = n.senderID,
-		d = n.threadID;
-	let threadInfo = (await o.getData(n.threadID)).threadInfo;
-	var l = require("moment-timezone").tz("Asia/Manila").format("HH:mm:ss D/MM/YYYY");
-	e.sendMessage(`At: ${l}\nYour report has been sent to the bot admins`, n.threadID, (() => {
-		var admins = this.config.ADMINBOT; // Assuming ADMINBOT is defined elsewhere
-		for (let admin of admins) {
-			let threadName = threadInfo.threadName;
-			e.sendMessage(`👤Report from: ${i}\n👨‍👩‍👧‍👧Box: ${threadName}\n🔰ID Box: ${d}\n🔷ID Use: ${t}\n-----------------\n⚠️Error: ${a.join(" ")}\n-----------------\nTime: ${l}`, admin, ((e, a) => global.client.handleReply.push({
-				name: this.config.name,
-				messageID: a.messageID,
-				credits: n.senderID,
-				messID: n.messageID,
-				id: d,
-				type: "calladmin"
-			})));
-		}
-	}));
+  const name = await getUserName(api, event.senderID);
+  let mentions = [];
+    mentions.push({
+        tag: name,
+        id: event.senderID,
+    });
+  var t = event.senderID,
+      d = event.threadID;
+  let threadInfo = await api.getThreadInfo(event.threadID);
+  var l = require("moment-timezone").tz("Asia/Manila").format("HH:mm:ss D/MM/YYYY");
+
+  api.sendMessage(`Your report has been sent to the bot admin successfull\nAt: ${l}`, event.threadID, () => {
+    var s = admin;
+    for (let o of s) {
+      let s = threadInfo.threadName || "Unnamed";
+      api.shareContact(`▱▱▱[𝗖𝗔𝗟𝗟 𝗔𝗗𝗠𝗜𝗡]▱▱▱\n\n- User Name: ${name}\n- User ID: ${t}\n- Sent from group: ${threadInfo.threadName}\n- Thread ID: ${d}\n\nContent:\n─────────────────\n${args.join(" ")}\n─────────────────\nTime: ${l}`, t, o, (err, message) => {
+        if (!err) {
+          event.messageReply.senderID({
+            name: module.exports.config.name,
+            messageID: message.messageID,
+            author: event.senderID,
+            messID: event.messageID,
+            id: d,
+            type: event.type
+          });
+        }
+      });
+    }
+  });
 };
