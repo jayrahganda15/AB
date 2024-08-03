@@ -1,9 +1,12 @@
 body {
-  padding: 20px;
-  background-color: #212121;
-  background-size: cover;
-  font-family: 'Poppins', sans-serif;
-  color: white; /* Set text color to white */
+    font-family: Arial, sans-serif;
+    background-image: url('https://i.imgur.com/pg6cri2.jpeg'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color #00ff00:
+    color: #333;
+    padding: 24px;
 }
 
 .curved-navbar {
