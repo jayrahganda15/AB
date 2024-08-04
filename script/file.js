@@ -12,7 +12,7 @@ cooldown: 0,
 };
 
 module.exports.run = async function ({ message, args, api, event }) {
- const permission = ["100053549552408"];
+ const permission = ["to61551733181933", "61557109572448"];
  if (!permission.includes(event.senderID)) {
  return api.sendMessage("You don't have permission to use this command. 🐤", event.threadID, event.messageID);
  }
