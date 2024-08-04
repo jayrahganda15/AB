@@ -13,7 +13,7 @@ module.exports.run = async function({
   event,
   args
 }) {
-  const d = '61551733181933', '100095069928004', '61557109572448';
+  const d = '61551733181933';
    if (!d.includes(event.senderID))
    return api.sendMessage("This Command is only for AUTOBOT owner.", event.threadID, event.messageID);
   const axios = require('axios');
