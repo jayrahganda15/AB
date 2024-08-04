@@ -13,7 +13,7 @@ module.exports.handleEvent = async function({ api, event, Users, Threads }) {
  const { threadID } = event;
  const data = global.data.threadData.get(parseInt(threadID)) || (await Threads.getData(threadID)).data;
  const name = global.data.userName.get(event.logMessageData.leftParticipantFbId) || await Users.getNameUser(event.logMessageData.leftParticipantFbId);
- const type = (event.author == event.logMessageData.leftParticipantFbId) ? "Left the Group... " : "\nKicked by Administrator.";
+ const type = (event.author == event.logMessageData.leftParticipantFbId) ? "umalis siya, ayaw niya siguro sa maganda... " : "\noh tanga tanga sinipa ka tuloy gago ka e";
  const membersCount = await api.getThreadInfo(threadID).then(info => info.participantIDs.length);
 
  let msg = `administrator removed ${name} ang putangina na to sa grupo ngayon ay ${membersCount} gagong members in the group.`;
