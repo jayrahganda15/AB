@@ -1,9 +1,9 @@
 module.exports.config = {
-    name: 'maurice',
+    name: 'guinchy',
     version: '1.0.0',
     role: 0,
-    description: "Engage in conversation with Maurice",
-    usage: "maurice",
+    description: "Engage in conversation with guinchy",
+    usage: "guinchy",
     credits: 'DOJA',
     cooldown: 3,
 };
@@ -33,7 +33,9 @@ module.exports.run = async function({ api, event }) {
         "huey",
         "mamamo",
         "nalulungcote akuh",
-        "stapet"
+        "stapet",
+        "nagsend ng bilat, kanino",
+        "amp0ta"
     ];
 
     try {
@@ -41,7 +43,7 @@ module.exports.run = async function({ api, event }) {
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
         
         // Format the message using the provided template
-        const formattedMessage = `🔍: What does maurice says?\n\n___________________\n\n${randomMessage}\n\n___________________\n\nUse 'help' commands, to see all the commands.`;
+        const formattedMessage = `🔍: What does guinchyna says?\n\n___________________\n\n${randomMessage}\n\n___________________\n\nUse 'help' commands, to see all the commands.`;
         
         // Send the formatted message
         api.sendMessage(formattedMessage, event.threadID, event.messageID);
